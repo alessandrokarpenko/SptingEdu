@@ -7,8 +7,30 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="musicBean"
+    <context:property-placeholder location="classpath:musicPlayer.properties"/>
+
+    <bean id="rockMusic"
           class="ru.ak.springcourse.RockMusic">
+    </bean>
+
+    <bean id="classicalMusic"
+          class="ru.ak.springcourse.ClassicalMusic">
+    </bean>
+
+    <bean id="rapMusic"
+          class="ru.ak.springcourse.RapMusic">
+    </bean>
+
+    <bean id="musicPlayer" class="ru.ak.springcourse.MusicPlayer">
+        <property name="musicList">
+            <list>
+                <ref bean="rapMusic"/>
+                <ref bean="classicalMusic"/>
+                <ref bean="rockMusic"/>
+            </list>
+        </property>
+        <property name="name" value="${musicPlayer.name}"/>
+        <property name="volume" value="${musicPlayer.volume}"/>
     </bean>
 
 </beans>

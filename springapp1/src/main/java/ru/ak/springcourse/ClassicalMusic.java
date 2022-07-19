@@ -1,24 +1,17 @@
 package ru.ak.springcourse;
 
-public class ClassicalMusic implements Music {
-    private ClassicalMusic() {
+import org.springframework.stereotype.Component;
 
-    }
+import java.util.List;
+
+@Component
+public class ClassicalMusic implements Music {
+
+    List<String> songs = List.of("Classical song 1", "Classical song 2", "Classical song 3");
 
     @Override
-    public String getSong() {
-        return "Hungarian Rhapsody";
+    public List<String> getSongs() {
+        return songs;
     }
 
-    private void initMethod() {
-        System.out.println("Init method for Classical music");
-    }
-
-    private void destroyMethod() {
-        System.out.println("Destroy method for Classical music");
-    }
-
-    public static ClassicalMusic getInstance() {
-        return new ClassicalMusic();
-    }
 }

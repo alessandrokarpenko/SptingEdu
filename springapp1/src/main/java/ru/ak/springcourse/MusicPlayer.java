@@ -1,38 +1,37 @@
 package ru.ak.springcourse;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
+import java.util.Random;
+
+@Component
 public class MusicPlayer {
 
-    private List<Music> musicList = new ArrayList<>();
-    private String name;
-    private int volume;
+    private Music musicC;
+    private Music musicR;
 
-    public MusicPlayer() {
+    public MusicPlayer(@Qualifier("classicalMusic") Music musicC, @Qualifier("rockMusic") Music musicR) {
+        this.musicC = musicC;
+        this.musicR = musicR;
     }
 
-    public void playMusic() {
-        musicList.forEach(x->System.out.println("Playing: " + x.getSong()));
+    public void playMusic(Type type) {
+
+        Music music;
+        switch (type) {
+            case ROCK:
+                music = musicR;
+                break;
+            case CLASSICAL:
+                music = musicC;
+                break;
+            default:
+                throw new RuntimeException();
+        };
+
+        Random random = new Random();
+        System.out.println(music.getSongs().get(random.nextInt(music.getSongs().size())));
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
-    }
-
-    public void setMusicList(List<Music> musicList) {
-        this.musicList = musicList;
-    }
 }

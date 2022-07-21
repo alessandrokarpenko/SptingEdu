@@ -23,3 +23,5 @@
 hs_err_pid*
 /springapp1.iml
 /springapp1/target/
+/springmvcapp1/target/
+/.idea/

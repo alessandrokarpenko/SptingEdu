@@ -1,37 +1,34 @@
 package ru.ak.springcourse;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.util.List;
 import java.util.Random;
 
-@Component
 public class MusicPlayer {
 
-    private Music musicC;
-    private Music musicR;
+    @Value("${musicPlayer.name}")
+    private String name;
 
-    public MusicPlayer(@Qualifier("classicalMusic") Music musicC, @Qualifier("rockMusic") Music musicR) {
-        this.musicC = musicC;
-        this.musicR = musicR;
+    @Value("${musicPlayer.volume}")
+    private int volume;
+
+    List<Music> musicGenres;
+
+    public MusicPlayer(List<Music> musicGenres) {
+        this.musicGenres = musicGenres;
     }
 
-    public void playMusic(Type type) {
+    public void playMusic() {
 
-        Music music;
-        switch (type) {
-            case ROCK:
-                music = musicR;
-                break;
-            case CLASSICAL:
-                music = musicC;
-                break;
-            default:
-                throw new RuntimeException();
-        };
+        Random randomGenre = new Random();
 
-        Random random = new Random();
-        System.out.println(music.getSongs().get(random.nextInt(music.getSongs().size())));
+        Music music = musicGenres.get(randomGenre.nextInt(musicGenres.size()));
+
+        Random randomSong = new Random();
+
+        System.out.println(music.getSongs().get(randomSong.nextInt(music.getSongs().size())));
+
     }
 
 }

@@ -25,3 +25,4 @@ hs_err_pid*
 /springapp1/target/
 /springmvcapp1/target/
 /.idea/
+/crudapp1/target/

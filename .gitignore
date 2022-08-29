@@ -26,3 +26,5 @@ hs_err_pid*
 /springmvcapp1/target/
 /.idea/
 /crudapp1/target/
+/hibernateapp/target/
+/libraryTask1/target/

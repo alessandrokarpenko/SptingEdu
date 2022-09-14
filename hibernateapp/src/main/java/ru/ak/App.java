@@ -23,13 +23,11 @@ public class App {
         try {
             currentSession.beginTransaction();
 
-            Person person = currentSession.get(Person.class, 4);
-            Item item = currentSession.get(Item.class, 1);
+            Person person = new Person("Test cascading", 30);
+            Item item = new Item("Test cascading item", person);
+            person.setItems(new ArrayList<>(Collections.singletonList(item)));
 
-            item.getOwner().getItems().remove(item);
-            item.setOwner(person);
-            person.getItems().add(item);
-
+            currentSession.save(person);
 
 
             currentSession.getTransaction().commit();
@@ -38,11 +36,33 @@ public class App {
         }
     }
 
+    private static void cascadeEx() {
+        Configuration configuration = new Configuration()
+                .addAnnotatedClass(Person.class)
+                .addAnnotatedClass(Item.class);
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
+
+        try (sessionFactory) {
+            Session currentSession = sessionFactory.getCurrentSession();
+            currentSession.beginTransaction();
+
+            Person person = new Person("Test cascading", 30);
+
+            person.addItem(new Item("Test cascading item 1"));
+            person.addItem(new Item("Test cascading item 2"));
+            person.addItem(new Item("Test cascading item 3"));
+
+            currentSession.save(person);
+
+            currentSession.getTransaction().commit();
+        }
+    }
+
     private static void hsl() {
         Configuration configuration = new Configuration().addAnnotatedClass(Person.class);
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session currentSession = sessionFactory.getCurrentSession();
-        try {
+        try (sessionFactory) {
+            Session currentSession = sessionFactory.getCurrentSession();
             currentSession.beginTransaction();
 
             List<Person> people = currentSession.createQuery("from Person where age > 30").getResultList();
@@ -50,30 +70,26 @@ public class App {
             people.forEach(System.out::println);
 
             currentSession.getTransaction().commit();
-        } finally {
-            sessionFactory.close();
         }
     }
 
     private static void getPerson() {
         Configuration configuration = new Configuration().addAnnotatedClass(Person.class);
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session currentSession = sessionFactory.getCurrentSession();
-        try {
+        try (sessionFactory) {
+            Session currentSession = sessionFactory.getCurrentSession();
             currentSession.beginTransaction();
             Person person = currentSession.get(Person.class, 1);
             System.out.println(person.getName() + " " + person.getAge());
             currentSession.getTransaction().commit();
-        } finally {
-            sessionFactory.close();
         }
     }
 
     private static void addPerson() {
         Configuration configuration = new Configuration().addAnnotatedClass(Person.class);
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session currentSession = sessionFactory.getCurrentSession();
-        try {
+        try (sessionFactory) {
+            Session currentSession = sessionFactory.getCurrentSession();
             currentSession.beginTransaction();
 
             Person person1 = new Person("Tom1", 40);
@@ -85,37 +101,31 @@ public class App {
             currentSession.save(person3);
 
             currentSession.getTransaction().commit();
-        } finally {
-            sessionFactory.close();
         }
     }
 
     private static void updatePerson() {
         Configuration configuration = new Configuration().addAnnotatedClass(Person.class);
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session currentSession = sessionFactory.getCurrentSession();
-        try {
+        try (sessionFactory) {
+            Session currentSession = sessionFactory.getCurrentSession();
             currentSession.beginTransaction();
             Person person = currentSession.get(Person.class, 2);
             System.out.println(person.getName() + " " + person.getAge());
             person.setName(person.getName() + "_new");
             currentSession.getTransaction().commit();
-        } finally {
-            sessionFactory.close();
         }
     }
 
     private static void deletePerson() {
         Configuration configuration = new Configuration().addAnnotatedClass(Person.class);
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session currentSession = sessionFactory.getCurrentSession();
-        try {
+        try (sessionFactory) {
+            Session currentSession = sessionFactory.getCurrentSession();
             currentSession.beginTransaction();
             Person person = currentSession.get(Person.class, 2);
             currentSession.delete(person);
             currentSession.getTransaction().commit();
-        } finally {
-            sessionFactory.close();
         }
     }
 }

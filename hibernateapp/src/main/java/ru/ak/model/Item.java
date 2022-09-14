@@ -26,6 +26,10 @@ public class Item {
         this.owner = owner;
     }
 
+    public Item(String itemName) {
+        this.itemName = itemName;
+    }
+
     public int getId() {
         return id;
     }

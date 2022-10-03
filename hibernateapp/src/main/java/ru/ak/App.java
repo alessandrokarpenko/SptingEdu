@@ -4,8 +4,7 @@ package ru.ak;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import ru.ak.model.Item;
-import ru.ak.model.Person;
+import ru.ak.model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,24 +14,65 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
         Configuration configuration = new Configuration()
-                .addAnnotatedClass(Person.class)
-                .addAnnotatedClass(Item.class);
+                .addAnnotatedClass(Actor.class)
+                .addAnnotatedClass(Movie.class);
+
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session currentSession = sessionFactory.getCurrentSession();
 
-        try {
-            currentSession.beginTransaction();
-
-            Person person = new Person("Test cascading", 30);
-            Item item = new Item("Test cascading item", person);
-            person.setItems(new ArrayList<>(Collections.singletonList(item)));
-
-            currentSession.save(person);
+        try (sessionFactory) {
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
 
 
-            currentSession.getTransaction().commit();
-        } finally {
-            sessionFactory.close();
+
+
+
+            session.getTransaction().commit();
+        }
+    }
+
+    private static void manyToMany() {
+        Configuration configuration = new Configuration()
+                .addAnnotatedClass(Actor.class)
+                .addAnnotatedClass(Movie.class);
+
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
+
+        try (sessionFactory) {
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+
+//            Movie movie = new Movie("pulp fiction", 1994);
+//            Actor actor1 = new Actor("harvey keitel", 81);
+//            Actor actor2 = new Actor("samuel l. jackson", 72);
+//            movie.setActors(new ArrayList<>(List.of(actor1, actor2)));
+//            actor1.setMovies(new ArrayList<>(Collections.singletonList(movie)));
+//            actor2.setMovies(new ArrayList<>(Collections.singletonList(movie)));
+//
+//            session.save(movie);
+//            session.save(actor1);
+//            session.save(actor2);
+
+//            Movie movie = session.get(Movie.class, 1);
+//            System.out.println(movie.getActors());
+
+//            Movie movie = new Movie("reservoir dogs", 1992);
+//            Actor actor = session.get(Actor.class, 1);
+//            movie.setActors(new ArrayList<>(Collections.singletonList(actor)));
+//            actor.getMovies().add(movie);
+//            session.save(movie);
+
+            Actor actor = session.get(Actor.class, 2);
+            System.out.println(actor.getMovies());
+
+            Movie movieToRemove = actor.getMovies().get(0);
+
+            actor.getMovies().remove(0);
+            movieToRemove.getActors().remove(actor);
+
+
+
+            session.getTransaction().commit();
         }
     }
 
@@ -48,9 +88,9 @@ public class App {
 
             Person person = new Person("Test cascading", 30);
 
-            person.addItem(new Item("Test cascading item 1"));
-            person.addItem(new Item("Test cascading item 2"));
-            person.addItem(new Item("Test cascading item 3"));
+//            person.addItem(new Item("Test cascading item 1"));
+//            person.addItem(new Item("Test cascading item 2"));
+//            person.addItem(new Item("Test cascading item 3"));
 
             currentSession.save(person);
 

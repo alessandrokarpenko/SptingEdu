@@ -28,3 +28,13 @@ hs_err_pid*
 /crudapp1/target/
 /hibernateapp/target/
 /libraryTask1/target/
+/SpringHibernateCRUDApp/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+/SpringHibernateCRUDApp/target/spring-mvc-app1/WEB-INF/views/people/edit.html
+/out/production/SptingEdu/hibernate.properties
+/SpringHibernateCRUDApp/target/classes/hibernate.properties
+/SpringHibernateCRUDApp/target/spring-mvc-app1/WEB-INF/classes/hibernate.properties
+/SpringHibernateCRUDApp/target/spring-mvc-app1/WEB-INF/views/people/index.html
+/SpringHibernateCRUDApp/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+/SpringHibernateCRUDApp/target/spring-mvc-app1/META-INF/MANIFEST.MF
+/SpringHibernateCRUDApp/target/spring-mvc-app1/WEB-INF/views/people/new.html
+/SpringHibernateCRUDApp/target/spring-mvc-app1/WEB-INF/views/people/show.html
